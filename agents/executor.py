@@ -3,7 +3,7 @@ from tools.calculator import calculator
 from tools.search import search
 from tools.python_exec import python_exec
 from utils.memory import add_memory, get_memory
-from utils.vector_memory import add_vector_memory, search_vector_memory
+from utils.memory import add_memory, get_memory
 
 import re
 from langchain_core.messages import HumanMessage
@@ -28,7 +28,7 @@ def executor_node(state):
     user_query = state["messages"][0].content.lower()
 
     # ---------------- MEMORY CHECK ----------------
-    memory_result = search_vector_memory(user_query)
+    memory_result = get_memory(user_query)
 
     if memory_result:
         return {
@@ -105,7 +105,6 @@ def save_to_memory(state):
     last_msg = state["messages"][-1].content
 
     if "final answer" in last_msg.lower():
-        print("pushing messages in the vector memory")
-        add_vector_memory(user_query, last_msg)
+        add_memory(user_query, last_msg)
 
     return state
